@@ -29,7 +29,7 @@ const CaptainSignup = () => {
       email: email,
       fullname: { firstname:firstname, lastname:lastname },
       password: password,
-      vehicle: { color: vehicleColor, plate: vehiclePlate, capacity: vehicleCapacity, vehicleType: vehicleType }
+      vehicle: { color: vehicleColor, plate: vehiclePlate, capacity: parseInt(vehicleCapacity,10), vehicleType: vehicleType }
     }
 
     const response=await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/register`,captainData);
