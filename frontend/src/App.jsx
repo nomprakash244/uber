@@ -12,6 +12,10 @@ import CaptainHome from './pages/CaptainHome'
 import CaptainProtectWrapper from './pages/CaptainProtectWrapper'
 
 import CaptainLogout from './pages/CaptainLogout'
+import ReferPage from './pages/ReferPage'
+import Help from "./pages/Help";
+import Faqs from "./pages/Faqs";
+import FaqDetail from "./pages/FaqDetail";
 
 const App = () => {
 
@@ -48,7 +52,10 @@ const App = () => {
             <CaptainLogout />
           </CaptainProtectWrapper>
         } />
-      
+       <Route path='/refer' element={<ReferPage />} />
+       <Route path="/help" element={<Help />} />
+        <Route path="/help/:category" element={<Faqs />} />
+        <Route path="/help/:category/:id" element={<FaqDetail />} />
 
 
       </Routes>
