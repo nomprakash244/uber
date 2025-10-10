@@ -7,7 +7,7 @@ const CaptainProtectWrapper = ({
     children
 }) => {
 
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('captain-token')
     const navigate = useNavigate()
     const { captain, setCaptain } = useContext(CaptainDataContext)
     const [ isLoading, setIsLoading ] = useState(true)
@@ -18,6 +18,7 @@ const CaptainProtectWrapper = ({
     useEffect(() => {
         if (!token) {
             navigate('/captain-login')
+            return
         }
 
         axios.get(`${import.meta.env.VITE_BASE_URL}/captains/profile`, {
@@ -32,7 +33,7 @@ const CaptainProtectWrapper = ({
         })
             .catch(err => {
 
-                localStorage.removeItem('token')
+                localStorage.removeItem('captain-token')
                 navigate('/captain-login')
             })
     }, [ token ])
