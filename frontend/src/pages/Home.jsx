@@ -5,16 +5,35 @@ import 'remixicon/fonts/remixicon.css'
 import LocationSearchPanel from '../components/LocationSearchPanel'
 import ReferPage from './ReferPage'
 import { useNavigate } from 'react-router-dom'
+import UserSettings from './UserSettings'
+import UserProfile from './UserProfile'
+import ChatWindow from './ChatWindow'
+import { transform } from 'framer-motion'
+import Vehiclepanel from '../components/Vehiclepanel'
+import ConfirmRide from '../components/ConfirmRide'
+import LookingForDriver from '../components/LookingForDriver'
+import WaitingForDriver from '../components/WaitingForDriver'
+
 
 const Home = () => {
   const [pickup, setPickup] = useState('')
   const [destination, setDestination] = useState('')
   const [panelOpen, setPanelOpen] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [vehiclePanel,setVehiclePanel]=useState(false)
+   const [confirmRidePanel,setconfirmRidePanel]=useState(false)
+   const [vehicleFound,setvehicleFound]=useState(false)
+     const [ waitingForDriver, setWaitingForDriver ] = useState(false)
+
+
 
   const panelRef = useRef(null)
   const panelCloseRef = useRef(null)
   const menuRef = useRef(null)
+  const vehiclePanelRef=useRef(null)
+  const confirmRidePanelRef=useRef(null)
+  const vehicleFoundRef=useRef(null)
+    const waitingForDriverRef = useRef(null)
 
   const navigate = useNavigate()
 
@@ -61,6 +80,57 @@ const Home = () => {
     })
   }, [menuOpen])
 
+  useGSAP(function(){
+   if(vehiclePanel){
+     gsap.to(vehiclePanelRef.current,{
+      transform:'translateY(0)'}
+    )
+   }
+   else{
+     gsap.to(vehiclePanelRef.current,{
+      transform:'translateY(100%)'}
+    )
+   }
+
+  },[vehiclePanel])
+   useGSAP(function(){
+   if(confirmRidePanel){
+     gsap.to(confirmRidePanelRef.current,{
+      transform:'translateY(0)'}
+    )
+   }
+   else{
+     gsap.to(confirmRidePanelRef.current,{
+      transform:'translateY(100%)'}
+    )
+   }
+
+  },[confirmRidePanel])
+  useGSAP(function(){
+   if(vehicleFound){
+     gsap.to(vehicleFoundRef.current,{
+      transform:'translateY(0)'}
+    )
+   }
+   else{
+     gsap.to(vehicleFoundRef.current,{
+      transform:'translateY(100%)'}
+    )
+   }
+
+  },[vehicleFound])
+  useGSAP(function () {
+        if (waitingForDriver) {
+            gsap.to(waitingForDriverRef.current, {
+                transform: 'translateY(0)'
+            })
+        } else {
+            gsap.to(waitingForDriverRef.current, {
+                transform: 'translateY(100%)'
+            })
+        }
+    }, [ waitingForDriver ])
+
   return (
     <div className='h-screen relative'>
 
@@ -78,7 +148,13 @@ const Home = () => {
           className='absolute left-0 mt-3 bg-white shadow-xl rounded-lg py-3 px-5 w-52 opacity-0 z-40'
         >
           <ul className='space-y-3 text-gray-800 text-sm font-medium'>
-            <li className='cursor-pointer hover:text-black'>🔧 Settings</li>
+            <li
+  className="cursor-pointer hover:text-black"
+  onClick={() => navigate('/settings')}
+>
+  🔧 Settings
+</li>
+
             <li
   onClick={() => navigate('/refer')}
   className='cursor-pointer hover:text-black'
@@ -87,15 +163,25 @@ const Home = () => {
 </li>
 
             <li className='cursor-pointer hover:text-black'>💳 Payment</li>
-            <li className='cursor-pointer hover:text-black'>👤 My Profile</li>
-            <li className='cursor-pointer hover:text-black'>🤖 Assistant</li>
+            <li
+  className="cursor-pointer hover:text-black"
+  onClick={() => navigate('/profile')}
+>
+  👤 My Profile
+</li>
+
+            <li 
+             className="cursor-pointer hover:text-black"
+  onClick={() => navigate('/chatbot')}>🤖 Assistant</li>
             <li className='cursor-pointer hover:text-black ' onClick={() => navigate('/help')}>❓ Help</li>
           </ul>
         </div>
       </div>
 
       {/* --- BACKGROUND --- */}
-      <div className='h-screen w-screen'>
+      <div 
+      
+      className='h-screen w-screen'>
         <img
           className='h-full w-full object-cover'
           src='https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif'
@@ -143,9 +229,28 @@ const Home = () => {
 
         {/* Slide-up Panel */}
         <div ref={panelRef} className='bg-white h-0 overflow-hidden'>
-          <LocationSearchPanel />
+          <LocationSearchPanel   setPanelOpen={setPanelOpen}   setVehiclePanel={setVehiclePanel} />
         </div>
       </div>
+      <div  ref={vehiclePanelRef} className='fixed z-10   translate-y-full w-full bg-white   bottom-0 px-3 py-10 pt-12'>
+       <Vehiclepanel  setconfirmRidePanel={setconfirmRidePanel}  setVehiclePanel={setVehiclePanel}  />
+       </div>
+        <div  ref={confirmRidePanelRef} className='fixed z-10   translate-y-full w-full bg-white   bottom-0 px-3 py-6 pt-12'>
+       <ConfirmRide setconfirmRidePanel={setconfirmRidePanel}  setvehicleFound={setvehicleFound} />
+       </div>
+        <div  ref={vehicleFoundRef} className='fixed z-10   translate-y-full w-full bg-white   bottom-0 px-3 py-6 pt-12'>
+          <LookingForDriver setvehicleFound={setvehicleFound} />
+      
+       </div>
+       <div ref={waitingForDriverRef} className='fixed w-full  z-10 bottom-0  bg-white px-3 py-6 pt-12'>
+                <WaitingForDriver
+                    
+                    setvehicleFound={setvehicleFound}
+                    setWaitingForDriver={setWaitingForDriver}
+                    waitingForDriver={waitingForDriver} />
+            </div>
+
+
     </div>
   )
 }

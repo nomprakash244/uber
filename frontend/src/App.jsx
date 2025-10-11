@@ -16,6 +16,10 @@ import ReferPage from './pages/ReferPage'
 import Help from "./pages/Help";
 import Faqs from "./pages/Faqs";
 import FaqDetail from "./pages/FaqDetail";
+import UserProfile from './pages/UserProfile';
+import UserSettings from './pages/UserSettings';
+import ChatWindow from './pages/ChatWindow'
+
 
 const App = () => {
 
@@ -53,9 +57,21 @@ const App = () => {
           </CaptainProtectWrapper>
         } />
        <Route path='/refer' element={<ReferPage />} />
+        <Route path='/chatbot' element={<ChatWindow />} />
        <Route path="/help" element={<Help />} />
         <Route path="/help/:category" element={<Faqs />} />
         <Route path="/help/:category/:id" element={<FaqDetail />} />
+          <Route path="/profile" element={
+  <UserProtectedWrapper>
+    <UserProfile />
+  </UserProtectedWrapper>
+}/>
+
+<Route path="/settings" element={
+  <UserProtectedWrapper>
+    <UserSettings />
+  </UserProtectedWrapper>
+}/>
 
 
       </Routes>

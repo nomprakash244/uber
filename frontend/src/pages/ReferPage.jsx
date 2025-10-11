@@ -1,11 +1,29 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import "remixicon/fonts/remixicon.css";
 import { useNavigate } from "react-router-dom";
 
 const ReferPage = () => {
+  const navigate = useNavigate();
+  const referralCode = "SPD1234";
 
-    const navigate = useNavigate();
+  const [showToast, setShowToast] = useState(false);
+
+  // ✅ Copy to clipboard with toast
+  const handleCopy = () => {
+    navigator.clipboard.writeText(referralCode);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 2000);
+  };
+
+  // ✅ WhatsApp share
+  const handleWhatsAppShare = () => {
+    const message = `🚀 Join Speedo now and earn rewards!\nUse my referral code: *${referralCode}* to sign up.\n\n👉 Download Speedo and start earning: https://speedoapp.com`;
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
+    window.open(whatsappUrl, "_blank");
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-[#f9f9f9] font-sans relative overflow-hidden">
       {/* --- HEADER --- */}
@@ -16,20 +34,14 @@ const ReferPage = () => {
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <div className="flex items-center justify-between">
-          {/* Back Button */}
           <i
-        className="ri-arrow-left-line text-2xl cursor-pointer"
-        onClick={() => navigate(-1)}
-      ></i>
-
-          {/* Title */}
+            className="ri-arrow-left-line text-2xl cursor-pointer"
+            onClick={() => navigate(-1)}
+          ></i>
           <h2 className="text-lg font-semibold">Refer Friends</h2>
-
-          {/* FAQs */}
           <i className="ri-question-line text-2xl cursor-pointer"></i>
         </div>
 
-        {/* Heading Text */}
         <div className="text-center mt-6">
           <motion.h3
             className="text-xl font-semibold"
@@ -46,20 +58,14 @@ const ReferPage = () => {
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
           >
-            <span>SPD1234</span>
-            <i className="ri-file-copy-line text-xl cursor-pointer"></i>
+            <span>{referralCode}</span>
+            <i
+              className="ri-file-copy-line text-xl cursor-pointer hover:text-blue-600 transition"
+              onClick={handleCopy}
+              title="Copy referral code"
+            ></i>
           </motion.div>
         </div>
-
-        {/* Illustration */}
-        <motion.div
-          className="flex justify-center mt-6"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.8 }}
-        >
-          
-        </motion.div>
       </motion.div>
 
       {/* --- INVITE BOX --- */}
@@ -70,10 +76,15 @@ const ReferPage = () => {
         transition={{ delay: 0.9, duration: 0.6 }}
       >
         <div className="flex items-center gap-3">
-          <i className="ri-user-add-line text-2xl"></i>
+          <i className="ri-user-add-line text-2xl text-[#1A73E8]"></i>
           <p className="font-medium">Invite Friends to Speedo</p>
         </div>
-        <button className="text-[#1A73E8] font-semibold">Invite</button>
+        <button
+          className="text-[#1A73E8] font-semibold flex items-center gap-2"
+          onClick={handleWhatsAppShare}
+        >
+          <i className="ri-whatsapp-line text-xl"></i> Invite
+        </button>
       </motion.div>
 
       {/* --- HOW IT WORKS SECTION --- */}
@@ -118,14 +129,35 @@ const ReferPage = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.4, duration: 0.6 }}
       >
-        <button className="w-full py-3 border border-gray-400 rounded-lg font-medium hover:bg-gray-50">
-          Invite 478 Friends to Speedo
+        <button
+          className="w-full py-3 border border-gray-400 rounded-lg font-medium hover:bg-gray-50"
+          onClick={handleWhatsAppShare}
+        >
+          Find friends to refer via WhatsApp
         </button>
 
-        <button className="w-full py-3 bg-[#FFC107] rounded-lg font-semibold text-black hover:bg-[#ffcd29] transition">
+        <button
+          className="w-full py-3 bg-[#FFC107] rounded-lg font-semibold text-black hover:bg-[#ffcd29] transition"
+          onClick={handleWhatsAppShare}
+        >
           Refer Now
         </button>
       </motion.div>
+
+      {/* ✅ Animated Toast */}
+      <AnimatePresence>
+        {showToast && (
+          <motion.div
+            className="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-[#323232] text-white text-sm px-4 py-2 rounded-full shadow-lg"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 40 }}
+            transition={{ duration: 0.4 }}
+          >
+            ✅ Referral code copied!
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
