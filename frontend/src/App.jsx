@@ -19,6 +19,7 @@ import FaqDetail from "./pages/FaqDetail";
 import UserProfile from './pages/UserProfile';
 import UserSettings from './pages/UserSettings';
 import ChatWindow from './pages/ChatWindow'
+import Riding from './pages/Riding'
 
 
 const App = () => {
@@ -72,6 +73,7 @@ const App = () => {
     <UserSettings />
   </UserProtectedWrapper>
 }/>
+<Route path="/riding" element={<Riding />} />
 
 
       </Routes>
