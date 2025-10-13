@@ -20,7 +20,7 @@ import UserProfile from './pages/UserProfile';
 import UserSettings from './pages/UserSettings';
 import ChatWindow from './pages/ChatWindow'
 import Riding from './pages/Riding'
-
+import PaymentPage from './pages/PaymentPage'
 
 const App = () => {
 
@@ -74,6 +74,7 @@ const App = () => {
   </UserProtectedWrapper>
 }/>
 <Route path="/riding" element={<Riding />} />
+<Route path="/payment" element={<PaymentPage />} />
 
 
       </Routes>

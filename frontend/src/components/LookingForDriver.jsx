@@ -18,7 +18,7 @@ const LookingForDriver = (props) => {
         <div >
           <h3 className='text-lg font-medium '>562/11
           </h3>
-          <p className='text-sm text-gray-600'>Konisi Petrol pump</p>
+          <p className='text-sm text-gray-600'>{props.pickup}</p>
 
         </div>
         </div>
@@ -29,7 +29,7 @@ const LookingForDriver = (props) => {
         <div >
           <h3 className='text-lg font-medium '>562/11
           </h3>
-          <p className='text-sm text-gray-600'>Konisi Petrol pump</p>
+          <p className='text-sm text-gray-600'>{props.destination}</p>
 
         </div>
         </div>
@@ -38,18 +38,14 @@ const LookingForDriver = (props) => {
         
 
         <div >
-          <h3 className='text-lg font-medium '>₹193.22
+          <h3 className='text-lg font-medium '>₹{props.fare[ props.vehicleType ]}
           </h3>
           <p className='text-sm text-gray-600'>Cash</p>
 
         </div>
         </div>
         </div>
-        <div>
-          <button onClick={() => props.setconfirmRidePanel(false)} className='w-full bg-green-600 mt-5 text-white font-semibold p-2 rounded-lg  '>Confirm</button>
-
-
-        </div>
+       
 
     </div>
   )

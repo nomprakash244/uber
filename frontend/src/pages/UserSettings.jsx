@@ -4,7 +4,7 @@ import { User, Star, Settings, Info, HelpCircle, LogOut } from 'lucide-react';
 
 const UserSettings = () => {
   const navigate = useNavigate();
-  const [favs, setFavs] = useState([{ id: 1, name: 'Home', address: '123 Main St' }]);
+  const [favs, setFavs] = useState([{ id: 1, name: 'Home', address: 'Berhampur' }]);
   const [newFav, setNewFav] = useState({ name: '', address: '' });
 
   const addFav = () => {
@@ -91,7 +91,7 @@ const UserSettings = () => {
             <Settings className="text-blue-500" size={20} />
             <div>
               <h2 className="font-medium text-gray-800">Preferences</h2>
-              <p className="text-gray-500 text-sm">Manage preferences (demo)</p>
+              <p className="text-gray-500 text-sm">Manage preferences</p>
             </div>
           </div>
         </div>
@@ -102,7 +102,7 @@ const UserSettings = () => {
             <Star className="text-purple-500" size={20} />
             <div>
               <h2 className="font-medium text-gray-800">App Shortcuts</h2>
-              <p className="text-gray-500 text-sm">Create shortcuts (demo)</p>
+              <p className="text-gray-500 text-sm">Create shortcuts</p>
             </div>
           </div>
         </div>
@@ -113,7 +113,7 @@ const UserSettings = () => {
             <Info className="text-gray-500" size={20} />
             <div>
               <h2 className="font-medium text-gray-800">About</h2>
-              <p className="text-gray-500 text-sm">Version 8.80.0 (demo)</p>
+              <p className="text-gray-500 text-sm">Version 8.80.0</p>
             </div>
           </div>
         </div>
@@ -124,7 +124,7 @@ const UserSettings = () => {
             <Info className="text-indigo-500" size={20} />
             <div>
               <h2 className="font-medium text-gray-800">Subscribe to Beta</h2>
-              <p className="text-gray-500 text-sm">Early access (demo)</p>
+              <p className="text-gray-500 text-sm">Early access</p>
             </div>
           </div>
         </div>
