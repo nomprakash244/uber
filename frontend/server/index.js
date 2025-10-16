@@ -14,7 +14,7 @@ app.use(
 );
 
 // ✅ Use your actual Gemini API key from Google AI Studio
-const GEMINI_API_KEY = "AIzaSyCwPu1aoxCU7eF-CXm1xb_1QDmMM3LAyn4";
+const GEMINI_API_KEY = "AIzaSyCBAWyp3tUrm21hM8_V6V-aCL3T0Z1Xqw4";
 
 // ✅ Updated Gemini endpoint (v1, and new model name)
 const GEMINI_MODEL = "gemini-2.5-flash"; // or gemini-1.5-pro if you prefer higher quality
@@ -25,6 +25,7 @@ app.post("/api/chat", async (req, res) => {
 
   try {
     const response = await fetch(
+      
       `https://generativelanguage.googleapis.com/v1/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`,
       {
         method: "POST",

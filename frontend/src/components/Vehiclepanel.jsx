@@ -6,7 +6,7 @@ const Vehiclepanel = (props) => {
       <h5 onClick={() => props.setVehiclePanel(false)} className='p-1 text-center w-[90%] absolute top-0 '><i className=' text-3xl  text-gray-200  ri-arrow-down-wide-line'></i></h5>
         <div 
         onClick={ ()=>{
-          props.setconfirmRidePanel(true)
+          props.setConfirmRidePanel(true)
           props.selectVehicle('car')
          }}
         className='flex  border-2 active:border-black  rounded-xl w-full p-3 items-center justify-between '>
@@ -20,7 +20,7 @@ const Vehiclepanel = (props) => {
         </div>
          <div 
          onClick={ ()=>{
-          props.setconfirmRidePanel(true)
+          props.setConfirmRidePanel(true)
           props.selectVehicle('bike')
          }}
          className='flex  border-2 active:border-black  rounded-xl w-full p-3 mt-4 items-center  justify-between'>
@@ -30,11 +30,11 @@ const Vehiclepanel = (props) => {
             <h5 className='font-medium text-sm '>2 mins away</h5>
             <p className='font-normal text-xs text-gray-600 '>Affordable,CompactRides</p>
           </div>
-          <h2 className='text-lg font-semibold'>₹{props.fare.bike}</h2>
+          <h2 className='text-lg font-semibold'>₹{props.fare.auto}</h2>
         </div>
         <div 
         onClick={ ()=>{
-          props.setconfirmRidePanel(true)
+          props.setConfirmRidePanel(true)
           props.selectVehicle('auto')
          }}
         className='flex  border-2 active:border-black   rounded-xl w-full p-3 mt-4 items-center  justify-between'>
