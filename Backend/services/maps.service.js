@@ -97,19 +97,27 @@ module.exports.getAutoCompleteSuggestions = async (input) => {
  * 4️⃣ Find captains within a given radius
  * MongoDB expects coordinates in [longitude, latitude] order.
  */
-module.exports.getCaptainsInTheRadius = async (lat, lng, radius) => {
+/**
+ * Find captains within a given radius (in km)
+ */
+module.exports.getCaptainsInTheRadius = async (lat, lng, radiusInKm) => {
   try {
+    const radiusInMeters = radiusInKm * 1000;
+
     const captains = await captainModel.find({
       location: {
-        $geoWithin: {
-          $centerSphere: [[lng, lat], radius / 6371], // ✅ Correct order: [lng, lat]
-        },
-      },
+        $near: {
+          $geometry: { type: "Point", coordinates: [lng, lat] },
+          $maxDistance: radiusInMeters
+        }
+      }
     });
 
+    console.log(`🚖 Captains found in ${radiusInKm}km radius:`, captains.map(c => c._id));
     return captains;
   } catch (err) {
-    console.error('Error finding captains in radius:', err);
-    throw err;
+    console.error('❌ Error finding captains in radius:', err);
+    return [];
   }
 };
+

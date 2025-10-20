@@ -15,7 +15,7 @@ function initializeSocket(server) {
     io.on('connection', (socket) => {
         console.log(`Client connected: ${socket.id}`);
 
-        // 🟢 User or Captain joins
+        // 🟢 Join event (user or captain connects)
         socket.on('join', async (data) => {
             try {
                 const { userId, userType } = data;
@@ -39,7 +39,7 @@ function initializeSocket(server) {
             }
         });
 
-        // 🟡 Update captain location
+        // 🟡 Update captain’s location (GeoJSON format)
         socket.on('update-location-captain', async (data) => {
             try {
                 const { userId, location } = data;
@@ -48,14 +48,17 @@ function initializeSocket(server) {
                     return socket.emit('error', { message: 'Invalid location data' });
                 }
 
+                // ✅ Store in GeoJSON format
                 await captainModel.findByIdAndUpdate(userId, {
                     location: {
-                        lat: location.lat,
-                        lng: location.lng,
+                        type: 'Point',
+                        coordinates: [location.lng, location.lat],
                     },
                 });
 
-                // Optionally broadcast captain's new location to nearby users
+                console.log(`📍 Updated GeoJSON location for captain ${userId}:`, location);
+
+                // Optionally broadcast to other clients if needed
                 // io.emit('captain-location-updated', { userId, location });
             } catch (error) {
                 console.error('Error updating location:', error.message);
@@ -70,18 +73,12 @@ function initializeSocket(server) {
     });
 }
 
-// 🟢 Utility: send event to a specific socket
+// 🟢 Utility: send message to specific socket
 const sendMessageToSocketId = (socketId, messageObject) => {
-    console.log('Emitting message:', messageObject);
+    if (!io) return console.log('❌ Socket.io not initialized.');
+    if (!socketId || !messageObject?.event) return console.log('❌ Invalid message parameters.');
 
-    if (!io) {
-        return console.log('❌ Socket.io not initialized.');
-    }
-
-    if (!socketId || !messageObject?.event) {
-        return console.log('❌ Invalid message parameters.');
-    }
-
+    console.log(`📤 Sending '${messageObject.event}' to ${socketId}`);
     io.to(socketId).emit(messageObject.event, messageObject.data);
 };
 

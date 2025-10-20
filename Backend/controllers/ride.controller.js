@@ -24,6 +24,7 @@ module.exports.createRide = async (req, res) => {
             destination,
             vehicleType
         });
+        console.log("✅ Ride created:", ride._id); 
 
         res.status(201).json(ride);
 
@@ -39,7 +40,7 @@ module.exports.createRide = async (req, res) => {
         const captainsInRadius = await mapService.getCaptainsInTheRadius(
             pickupCoordinates.lat,
             pickupCoordinates.lng,
-            2
+            10
         );
 
         // Remove OTP before sending ride data to captains
@@ -61,6 +62,8 @@ module.exports.createRide = async (req, res) => {
         console.error('Error in createRide:', err);
         return res.status(500).json({ message: err.message });
     }
+   
+
 };
 
 /**

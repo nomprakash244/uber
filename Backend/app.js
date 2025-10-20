@@ -16,6 +16,7 @@ const connectDB=require('./db/db');
 connectDB();
 
 
+
 app.use(cors());
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
