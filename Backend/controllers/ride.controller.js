@@ -40,7 +40,7 @@ module.exports.createRide = async (req, res) => {
         const captainsInRadius = await mapService.getCaptainsInTheRadius(
             pickupCoordinates.lat,
             pickupCoordinates.lng,
-            10
+            10000
         );
 
         // Remove OTP before sending ride data to captains
@@ -48,15 +48,16 @@ module.exports.createRide = async (req, res) => {
 
         const rideWithUser = await rideModel.findOne({ _id: ride._id }).populate('user');
 
-        // Notify captains via WebSocket
-        captainsInRadius.forEach(captain => {
+        // Send ride request to each nearby captain
+        for (const captain of captainsInRadius) {
             if (captain.socketId) {
+                console.log(`🚗 Sending ride request to captain ${captain._id} (${captain.socketId})`);
                 sendMessageToSocketId(captain.socketId, {
                     event: 'new-ride',
                     data: rideWithUser
                 });
             }
-        });
+        }
 
     } catch (err) {
         console.error('Error in createRide:', err);
@@ -130,18 +131,48 @@ module.exports.startRide = async (req, res) => {
     const { rideId, otp } = req.query;
 
     try {
+        console.log(`🔑 Starting ride ${rideId} with OTP ${otp}`);
+        
         const ride = await rideService.startRide({
             rideId,
             otp,
             captain: req.captain
         });
 
+        // Make sure we have required data
+        if (!ride || !ride.user || !ride.user.socketId) {
+            console.error('❌ Missing ride data:', { ride });
+            return res.status(400).json({ message: 'Invalid ride data' });
+        }
+
+        console.log(`✅ Ride ${rideId} started successfully`);
+
+        // Notify user
         sendMessageToSocketId(ride.user.socketId, {
             event: 'ride-started',
-            data: ride
+            data: {
+                _id: ride._id,
+                pickup: ride.pickup,
+                destination: ride.destination,
+                fare: ride.fare,
+                status: ride.status,
+                captain: {
+                    _id: ride.captain._id,
+                    fullname: ride.captain.fullname,
+                    vehicle: ride.captain.vehicle
+                },
+                user: {
+                    _id: ride.user._id,
+                    fullname: ride.user.fullname
+                }
+            }
         });
 
-        return res.status(200).json(ride);
+        // Send sanitized ride data (without OTP) back to captain
+        const sanitizedRide = ride.toObject();
+        delete sanitizedRide.otp;
+        return res.status(200).json(sanitizedRide);
+
     } catch (err) {
         console.error('Error in startRide:', err);
         return res.status(500).json({ message: err.message });

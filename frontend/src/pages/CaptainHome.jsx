@@ -20,11 +20,13 @@ const CaptainHome = () => {
     const { captain } = useContext(CaptainDataContext)
 
     useEffect(() => {
+        // Join socket room
         socket.emit('join', {
             userId: captain._id,
             userType: 'captain',
         })
 
+        // Setup location updates
         const updateLocation = () => {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition((position) => {
@@ -42,8 +44,20 @@ const CaptainHome = () => {
         const locationInterval = setInterval(updateLocation, 10000)
         updateLocation()
 
-        // return () => clearInterval(locationInterval)
-    }, [])
+        // Listen for new ride requests
+        const onNewRide = (data) => {
+            console.log('🔔 New ride request received:', data)
+            setRide(data)
+            setRidePopupPanel(true)
+        }
+        socket.on('new-ride', onNewRide)
+
+        // Cleanup
+        return () => {
+            clearInterval(locationInterval)
+            socket.off('new-ride', onNewRide)
+        }
+    }, [captain._id, socket])
 
     socket.on('new-ride', (data) => {
         setRide(data)
@@ -55,7 +69,7 @@ const CaptainHome = () => {
             `${import.meta.env.VITE_BASE_URL}/rides/confirm`,
             {
                 rideId: ride._id,
-                captainId: captain._id,
+                
             },
             {
                 headers: {

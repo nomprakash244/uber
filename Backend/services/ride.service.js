@@ -108,6 +108,7 @@ module.exports.confirmRide = async ({ rideId, captain }) => {
     .select('+otp');
 
   if (!ride) throw new Error('Ride not found');
+console.log(`Ride confirmed: ${ride._id}, Status: ${ride.status}, Captain: ${ride.captain._id}`);
 
   return ride;
 };
