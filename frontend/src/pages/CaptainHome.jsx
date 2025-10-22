@@ -20,13 +20,11 @@ const CaptainHome = () => {
     const { captain } = useContext(CaptainDataContext)
 
     useEffect(() => {
-        // Join socket room
         socket.emit('join', {
             userId: captain._id,
             userType: 'captain',
         })
 
-        // Setup location updates
         const updateLocation = () => {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition((position) => {
@@ -44,20 +42,8 @@ const CaptainHome = () => {
         const locationInterval = setInterval(updateLocation, 10000)
         updateLocation()
 
-        // Listen for new ride requests
-        const onNewRide = (data) => {
-            console.log('🔔 New ride request received:', data)
-            setRide(data)
-            setRidePopupPanel(true)
-        }
-        socket.on('new-ride', onNewRide)
-
-        // Cleanup
-        return () => {
-            clearInterval(locationInterval)
-            socket.off('new-ride', onNewRide)
-        }
-    }, [captain._id, socket])
+        // return () => clearInterval(locationInterval)
+    }, [])
 
     socket.on('new-ride', (data) => {
         setRide(data)
@@ -69,7 +55,7 @@ const CaptainHome = () => {
             `${import.meta.env.VITE_BASE_URL}/rides/confirm`,
             {
                 rideId: ride._id,
-                
+                captainId: captain._id,
             },
             {
                 headers: {
@@ -118,7 +104,7 @@ const CaptainHome = () => {
             <div className='fixed p-6 top-0 flex items-center justify-between w-screen'>
                 <img
                     className='w-16'
-                    src='https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png'
+                    src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGtDRk78nK-4kd9htj9nCA4zWEPppOHQ5mVQ&s'
                     alt=''
                 />
                 <Link

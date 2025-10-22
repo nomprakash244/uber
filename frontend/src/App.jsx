@@ -21,6 +21,7 @@ import UserSettings from './pages/UserSettings';
 import ChatWindow from './pages/ChatWindow'
 import Riding from './pages/Riding'
 import PaymentPage from './pages/PaymentPage'
+import CaptainRiding from './pages/CaptainRiding'
 
 const App = () => {
 
@@ -76,6 +77,11 @@ const App = () => {
 <Route path="/riding" element={<Riding />} />
 <Route path="/payment" element={<PaymentPage />} />
 
+<Route path="/captain-riding" element={
+  <CaptainProtectWrapper>
+    <CaptainRiding />
+  </CaptainProtectWrapper>
+}/>
 
       </Routes>
     </div>

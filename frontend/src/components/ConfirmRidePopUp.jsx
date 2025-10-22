@@ -1,45 +1,23 @@
-
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
 const ConfirmRidePopUp = (props) => {
-    const [ otp, setOtp ] = useState('')
+    const [otp, setOtp] = useState('')
     const navigate = useNavigate()
 
-    const submitHander = async (e) => {
+    const submitHander = (e) => {
         e.preventDefault()
-
-        try {
-            console.log('🔑 Starting ride with OTP:', otp);
-            
-            const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/rides/start-ride`, {
-                params: {
-                    rideId: props.ride._id,
-                    otp: otp
-                },
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-
-            if (response.status === 200) {
-                console.log('✅ Ride started successfully:', response.data);
-                props.setConfirmRidePopupPanel(false)
-                props.setRidePopupPanel(false)
-                // Pass the updated ride data from response
-                navigate('/captain-riding', { 
-                    state: { 
-                        ride: response.data 
-                    }
-                })
+        // Directly navigate to captain-riding with ride data without any check
+        navigate('/captain-riding', {
+            state: {
+                ride: props.ride
             }
-        } catch (err) {
-            console.error('❌ Error starting ride:', err.response?.data || err.message);
-            alert(err.response?.data?.message || 'Failed to start ride. Please try again.');
-        }
+        })
+        // Optionally close the popups too
+        props.setConfirmRidePopupPanel(false)
+        props.setRidePopupPanel(false)
     }
+
     return (
         <div>
             <h5 className='p-1 text-center w-[93%] absolute top-0' onClick={() => {
@@ -86,9 +64,7 @@ const ConfirmRidePopUp = (props) => {
                         <button onClick={() => {
                             props.setConfirmRidePopupPanel(false)
                             props.setRidePopupPanel(false)
-
                         }} className='w-full mt-2 bg-red-600 text-lg text-white font-semibold p-3 rounded-lg'>Cancel</button>
-
                     </form>
                 </div>
             </div>

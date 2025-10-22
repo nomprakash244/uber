@@ -94,43 +94,37 @@ module.exports.createRide = async ({ user, pickup, destination, vehicleType }) =
  * Confirm a ride by captain
  */
 module.exports.confirmRide = async ({ rideId, captain }) => {
-  if (!rideId) throw new Error('Ride ID is required');
-
   await rideModel.findByIdAndUpdate(rideId, {
     status: 'accepted',
     captain: captain._id,
   });
-
+  
   const ride = await rideModel
     .findById(rideId)
     .populate('user')
     .populate('captain')
     .select('+otp');
-
+  
   if (!ride) throw new Error('Ride not found');
-console.log(`Ride confirmed: ${ride._id}, Status: ${ride.status}, Captain: ${ride.captain._id}`);
-
   return ride;
 };
+
 
 /**
  * Start a ride after OTP verification
  */
 module.exports.startRide = async ({ rideId, otp, captain }) => {
-  if (!rideId || !otp) throw new Error('Ride ID and OTP are required');
-
+  await rideModel.findByIdAndUpdate(rideId, { 
+    status: 'ongoing',
+    captain: captain._id 
+  });
+  
   const ride = await rideModel
     .findById(rideId)
     .populate('user')
-    .populate('captain')
-    .select('+otp');
-
+    .populate('captain');
+    
   if (!ride) throw new Error('Ride not found');
-  if (ride.status !== 'accepted') throw new Error('Ride not accepted');
-  if (ride.otp !== otp) throw new Error('Invalid OTP');
-
-  await rideModel.findByIdAndUpdate(rideId, { status: 'ongoing' });
-
   return ride;
 };
 
