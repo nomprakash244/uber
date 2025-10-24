@@ -341,7 +341,7 @@ const CaptainRiding = () => {
   }, []);
 
   const handleCompleteRide = () => {
-    navigate('/Home');
+    navigate('/review-rating', { state: { ride: rideData } });
   };
 
   return (
@@ -349,7 +349,7 @@ const CaptainRiding = () => {
       {/* Header */}
       <div className="p-4 flex items-center justify-between w-full z-20 bg-white shadow-md flex-shrink-0">
         <img
-          className="w-16"
+          className="w-12"
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGtDRk78nK-4kd9htj9nCA4zWEPppOHQ5mVQ&s"
           alt="Uber Logo"
         />
@@ -362,7 +362,7 @@ const CaptainRiding = () => {
       </div>
 
       {/* Map Container - 60% */}
-      <div className="flex-1 w-full relative" style={{ height: '60%' }}>
+      <div className="flex-1 w-full relative" style={{ height: '70%' }}>
         <div ref={mapContainerRef} className="w-full h-full" style={{ minHeight: '400px' }} />
         
         {loading && (

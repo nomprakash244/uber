@@ -10,6 +10,7 @@ const userRoutes=require('./routes/user.routes');
 const captainRoutes=require('./routes/captain.routes');
 const mapRoutes=require('./routes/maps.routes')
 const rideRoutes=require('./routes/ride.routes')
+const reviewRoutes = require('./routes/review.routes');
 const connectDB=require('./db/db');
 
 
@@ -17,10 +18,12 @@ connectDB();
 
 
 
+
+
 app.use(cors());
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
-
+app.use('/reviews', reviewRoutes);
 app.get('/',(req,res)=>{
     res.send("Hello World");
 });

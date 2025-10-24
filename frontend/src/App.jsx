@@ -22,6 +22,7 @@ import ChatWindow from './pages/ChatWindow'
 import Riding from './pages/Riding'
 import PaymentPage from './pages/PaymentPage'
 import CaptainRiding from './pages/CaptainRiding'
+import ReviewRating from './pages/ReviewRating'
 
 const App = () => {
 
@@ -82,6 +83,8 @@ const App = () => {
     <CaptainRiding />
   </CaptainProtectWrapper>
 }/>
+<Route path="/review-rating" element={<ReviewRating />} />
+
 
       </Routes>
     </div>
