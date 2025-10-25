@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: uber-backend
+    env: node
+    region: oregon
+    buildCommand: cd Backend && npm install
+    startCommand: cd Backend && npm start
+    envVars:
+      - key: DB_CONNECT
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: PORT
+        value: 4000
+      - key: RAZORPAY_KEY_ID
+        sync: false
+      - key: RAZORPAY_KEY_SECRET
+        sync: false
+
+  - type: web
+    name: uber-frontend
+    env: static
+    region: oregon
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/dist
+    envVars:
+      - key: VITE_BASE_URL
+        value: https://uber-backend.onrender.com
+      - key: VITE_MAPBOX_ACCESS_TOKEN
+        sync: false
