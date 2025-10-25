@@ -341,7 +341,7 @@ const CaptainRiding = () => {
   }, []);
 
   const handleCompleteRide = () => {
-    navigate('/review-rating', { state: { ride: rideData } });
+    navigate('/captain-home', { state: { ride: rideData } });
   };
 
   return (

@@ -11,6 +11,7 @@ import UserLogout from './pages/UserLogout'
 import CaptainHome from './pages/CaptainHome'
 import CaptainProtectWrapper from './pages/CaptainProtectWrapper'
 
+
 import CaptainLogout from './pages/CaptainLogout'
 import ReferPage from './pages/ReferPage'
 import Help from "./pages/Help";
@@ -84,6 +85,8 @@ const App = () => {
   </CaptainProtectWrapper>
 }/>
 <Route path="/review-rating" element={<ReviewRating />} />
+
+
 
 
       </Routes>

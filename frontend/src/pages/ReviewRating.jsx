@@ -55,7 +55,7 @@ const ReviewRating = () => {
       setSubmitted(true);
     } finally {
       setLoading(false);
-      setTimeout(() => navigate('/home'), 2000);
+      setTimeout(() => navigate('/Home'), 2000);
     }
   };
 
@@ -167,7 +167,7 @@ const ReviewRating = () => {
 
             <button
               type="button"
-              onClick={() => navigate('/home')}
+              onClick={() => navigate('/captain-home')}
               className="w-full mt-3 py-4 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors"
             >
               Skip for Now

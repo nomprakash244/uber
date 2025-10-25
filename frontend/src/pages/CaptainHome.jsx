@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import CaptainDetails from '../components/CaptainDetails'
 import RidePopUp from '../components/RidePopUp'
 import ConfirmRidePopUp from '../components/ConfirmRidePopUp'
@@ -18,6 +18,7 @@ const CaptainHome = () => {
 
     const { socket } = useContext(SocketContext)
     const { captain } = useContext(CaptainDataContext)
+    const navigate = useNavigate()
 
     useEffect(() => {
         socket.emit('join', {
@@ -42,16 +43,24 @@ const CaptainHome = () => {
         const locationInterval = setInterval(updateLocation, 10000)
         updateLocation()
 
-        // return () => clearInterval(locationInterval)
-    }, [])
+        // Cleanup interval on unmount
+        return () => clearInterval(locationInterval)
+    }, [socket, captain._id])
 
-    socket.on('new-ride', (data) => {
-        setRide(data)
-        setRidePopupPanel(true)
-    })
+    useEffect(() => {
+        socket.on('new-ride', (data) => {
+            setRide(data)
+            setRidePopupPanel(true)
+        })
+
+        // Cleanup socket listener on unmount
+        return () => {
+            socket.off('new-ride')
+        }
+    }, [socket])
 
     async function confirmRide() {
-        const response = await axios.post(
+        await axios.post(
             `${import.meta.env.VITE_BASE_URL}/rides/confirm`,
             {
                 rideId: ride._id,
@@ -67,6 +76,8 @@ const CaptainHome = () => {
         setRidePopupPanel(false)
         setConfirmRidePopupPanel(true)
     }
+
+    
 
     useGSAP(
         function () {
@@ -107,12 +118,9 @@ const CaptainHome = () => {
                     src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGtDRk78nK-4kd9htj9nCA4zWEPppOHQ5mVQ&s'
                     alt=''
                 />
-                <Link
-                    to='/captain-home'
-                    className='h-10 w-10 bg-white flex items-center justify-center rounded-full'
-                >
+                
                     <i className='text-lg font-medium ri-logout-box-r-line'></i>
-                </Link>
+                
             </div>
 
             {/* Background / Map / Animation */}
